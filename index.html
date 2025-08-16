@@ -10,7 +10,7 @@
 <body>
   <div class="shell">
     <ul class="steps">
-      <li data-page="ticketsPage">Tickets</li>
+      <li data-page="ticketsPage">Tickets Options:</li>
       <li data-page="formPage">Info</li>
       <li data-page="paymentPage">Payment</li>
     </ul>
@@ -43,10 +43,7 @@
           <input class="input" type="tel" name="phone" placeholder="Phone Number" required>
           <div class="helper">For day‑of updates if needed.</div>
 
-          <label>
-            Ticket (debug):
-            <input type="text" name="ticket" id="ticketInput" readonly style="width:100%;">
-          </label>          <input type="hidden" name="_subject" value="New Ticket Submission" />
+          <input type="hidden" name="ticket" id="ticketInput" />
           <input type="hidden" name="_next" value="https://anthonypacella.github.io/PacentranoSmokerTickets/#paymentPage" />
           <input type="hidden" name="_autoresponse" value="Thanks for your ticket submission. We'll see you on October 11th!." />
 
@@ -94,7 +91,7 @@
       });
     }
 
-    function selectTicket(ticketText) {
+    function selectTicket(ticketInput) {
       const amountOnly = ticketText.match(/\$\d+(?:\.\d{2})?/)[0];
       localStorage.setItem('selectedTicket', amountOnly);
       localStorage.setItem('selectedTicketText', ticketText);
