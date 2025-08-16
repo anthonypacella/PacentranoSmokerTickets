@@ -26,7 +26,7 @@
         <button class="ticket-btn" onclick="selectTicket('$40 - Dinner and Open Bar Only')">$40 — Dinner and Open Bar Only</button>
         <div class="spacer"></div>
         <img src="flyer.png" alt="Event Flyer" class="responsive" />
-        <p class="note">Join Us!</p>
+        <p class="note">HELLO!</p>
       </div>
 
       <!-- Page 2: Form Submission -->
@@ -131,16 +131,16 @@
     });
 
     // Send form data to Google Sheets before FormSubmit
-    document.getElementById('ticketForm').addEventListener('submit', function (e) {
-      const formData = new FormData(this);
-      const data = Object.fromEntries(formData.entries());
+    const form = document.getElementById('ticketForm');
+      form.addEventListener('submit', function (e) {
+        const formData = new FormData(form);
+
 
       // Replace with your actual Google Sheets endpoint
-      fetch('https://script.google.com/macros/s/AKfycbwDAAqfe77bCibMzP3jLsD8g0eMBwO5GZ3Wz5WECaJE9uc1XAtJQf1rf9sCpIP6yt8NyA/exec', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
+        fetch('https://script.google.com/macros/s/AKfycbwDAAqfe77bCibMzP3jLsD8g0eMBwO5GZ3Wz5WECaJE9uc1XAtJQf1rf9sCpIP6yt8NyA/exec', {
+          method: 'POST',
+          body: formData
+        });
     });
   </script>
 </body>
