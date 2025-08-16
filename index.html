@@ -32,7 +32,7 @@
       <!-- Page 2: Form Submission -->
       <div id="formPage" class="page">
         <h2 onclick="showPage('formPage')" class="clickable-header">Info</h2>
-        <form action="https://formsubmit.co/pacentranoclubit@gmail.com" method="POST">
+        <form id="ticketForm" action="https://formsubmit.co/pacentranoclubit@gmail.com" method="POST">
           <input class="input" type="text" name="name" placeholder="Full Name" required>
           <div class="helper">As it should appear on your reservation.</div>
 
@@ -44,7 +44,7 @@
 
           <input type="hidden" name="ticket" id="ticketInput" />
           <input type="hidden" name="_subject" value="New Ticket Submission" />
-          <input type="hidden" name="_next" value="https://anthonypacella.github.io/PacentranoSmokerTickets/#paymentPage" />    
+          <input type="hidden" name="_next" value="https://anthonypacella.github.io/PacentranoSmokerTickets/#paymentPage" />
           <input type="hidden" name="_autoresponse" value="Thanks for your ticket submission. We'll see you on October 11th!." />
 
           <div class="spacer"></div>
@@ -93,6 +93,7 @@
 
     function selectTicket(ticketText) {
       const amountOnly = ticketText.match(/\$\d+(?:\.\d{2})?/)[0];
+      localStorage.setItem('selectedTicket', amountOnly);
       document.getElementById('selectedTicket').textContent = amountOnly;
       document.getElementById('ticketInput').value = ticketText;
       showPage('formPage');
@@ -118,12 +119,29 @@
     });
 
     window.addEventListener('load', () => {
-  const hash = window.location.hash;
-  if (hash) {
-    showPage(hash.replace('#', ''));
-  }
-});
+      const hash = window.location.hash;
+      if (hash) {
+        showPage(hash.replace('#', ''));
+      }
 
+      const storedAmount = localStorage.getItem('selectedTicket');
+      if (storedAmount) {
+        document.getElementById('selectedTicket').textContent = storedAmount;
+      }
+    });
+
+    // Send form data to Google Sheets before FormSubmit
+    document.getElementById('ticketForm').addEventListener('submit', function (e) {
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+
+      // Replace with your actual Google Sheets endpoint
+      fetch('https://script.google.com/macros/s/AKfycbwDAAqfe77bCibMzP3jLsD8g0eMBwO5GZ3Wz5WECaJE9uc1XAtJQf1rf9sCpIP6yt8NyA/exec', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+    });
   </script>
 </body>
 </html>
