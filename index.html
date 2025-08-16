@@ -26,7 +26,7 @@
         <button class="ticket-btn" onclick="selectTicket('$40 - Dinner and Open Bar Only')">$40 — Dinner and Open Bar Only</button>
         <div class="spacer"></div>
         <img src="flyer.png" alt="Event Flyer" class="responsive" />
-        <p class="note">HELLO!</p>
+        <p class="note">Join Us!</p>
       </div>
 
       <!-- Page 2: Form Submission -->
@@ -94,6 +94,7 @@
     function selectTicket(ticketText) {
       const amountOnly = ticketText.match(/\$\d+(?:\.\d{2})?/)[0];
       localStorage.setItem('selectedTicket', amountOnly);
+      localStorage.setItem('selectedTicketText', ticketText);
       document.getElementById('selectedTicket').textContent = amountOnly;
       document.getElementById('ticketInput').value = ticketText;
       showPage('formPage');
@@ -128,19 +129,21 @@
       if (storedAmount) {
         document.getElementById('selectedTicket').textContent = storedAmount;
       }
+
+      const storedTicketText = localStorage.getItem('selectedTicketText');
+      if (storedTicketText) {
+        document.getElementById('ticketInput').value = storedTicketText;
+      }
     });
 
     // Send form data to Google Sheets before FormSubmit
-    const form = document.getElementById('ticketForm');
-      form.addEventListener('submit', function (e) {
-        const formData = new FormData(form);
+    document.getElementById('ticketForm').addEventListener('submit', function (e) {
+      const formData = new FormData(this);
 
-
-      // Replace with your actual Google Sheets endpoint
-        fetch('https://script.google.com/macros/s/AKfycbwDAAqfe77bCibMzP3jLsD8g0eMBwO5GZ3Wz5WECaJE9uc1XAtJQf1rf9sCpIP6yt8NyA/exec', {
-          method: 'POST',
-          body: formData
-        });
+      fetch('https://script.google.com/macros/s/AKfycbwDAAqfe77bCibMzP3jLsD8g0eMBwO5GZ3Wz5WECaJE9uc1XAtJQf1rf9sCpIP6yt8NyA/exec', {
+        method: 'POST',
+        body: formData
+      });
     });
   </script>
 </body>
