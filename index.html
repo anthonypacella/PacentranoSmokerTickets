@@ -27,7 +27,7 @@
         <div class="spacer"></div>
         <h2>Event Flyer:</h2>
         <img src="flyer.png" alt="Event Flyer" class="responsive" />
-        <p class="note">Join Us!!!!</p>
+        <p class="note">Join Us!</p>
       </div>
 
       <!-- Page 2: Form Submission -->
@@ -137,27 +137,32 @@
     });
 
     // Final submit listener with ticket fix
-        document.getElementById('ticketForm').addEventListener('submit', function () {
-          // Always set ticketInput from localStorage before creating form data
-          const storedticketInput = localStorage.getItem('selectedticketInput') || '';
-          document.getElementById('ticketInput').value = storedticketInput;
+      document.getElementById('ticketForm').addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevent default form submission
 
-          const formData = new FormData(this);
-          const params = new URLSearchParams();
+        // Always set ticketInput from localStorage before creating form data
+        const storedticketInput = localStorage.getItem('selectedticketInput') || '';
+        document.getElementById('ticketInput').value = storedticketInput;
 
-          for (const [key, value] of formData.entries()) {
-            params.append(key, value);
-          }
+        const formData = new FormData(this);
+        const params = new URLSearchParams();
 
-          console.log("Sending to Google Sheets:", params.toString());
+        for (const [key, value] of formData.entries()) {
+          params.append(key, value);
+        }
 
-          fetch('https://script.google.com/macros/s/AKfycbwDAAqfe77bCibMzP3jLsD8g0eMBwO5GZ3Wz5WECaJE9uc1XAtJQf1rf9sCpIP6yt8NyA/exec', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: params.toString(),
-            keepalive: true
-          });
+        console.log("Sending to Google Sheets:", params.toString());
+
+        fetch('https://script.google.com/macros/s/AKfycbwDAAqfe77bCibMzP3jLsD8g0eMBwO5GZ3Wz5WECaJE9uc1XAtJQf1rf9sCpIP6yt8NyA/exec', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: params.toString(),
+          keepalive: true
         });
+
+        // Now submit the form to FormSubmit
+        this.submit();
+      });
   </script>
 </body>
 </html>
