@@ -27,7 +27,7 @@
         <div class="spacer"></div>
         <h2>Event Flyer:</h2>
         <img src="flyer.png" alt="Event Flyer" class="responsive" />
-        <p class="note">Join Us!</p>
+        <p class="note">Join Us!!!!</p>
       </div>
 
       <!-- Page 2: Form Submission -->
@@ -92,11 +92,11 @@
     }
 
     function selectTicket(ticketInput) {
-      const amountOnly = ticketText.match(/\$\d+(?:\.\d{2})?/)[0];
+      const amountOnly = ticketInput.match(/\$\d+(?:\.\d{2})?/)[0];
       localStorage.setItem('selectedTicket', amountOnly);
-      localStorage.setItem('selectedTicketText', ticketInput);
+      localStorage.setItem('selectedticketInput', ticketInput);
       document.getElementById('selectedTicket').textContent = amountOnly;
-      document.getElementById('ticketInput').value = ticketText;
+      document.getElementById('ticketInput').value = ticketInput;
       showPage('formPage');
     }
 
@@ -130,17 +130,17 @@
         document.getElementById('selectedTicket').textContent = storedAmount;
       }
 
-      const storedTicketText = localStorage.getItem('selectedTicketText');
-      if (storedTicketText) {
-        document.getElementById('ticketInput').value = storedTicketText;
+      const storedticketInput = localStorage.getItem('selectedticketInput');
+      if (storedticketInput) {
+        document.getElementById('ticketInput').value = storedticketInput;
       }
     });
 
     // Final submit listener with ticket fix
         document.getElementById('ticketForm').addEventListener('submit', function () {
           // Always set ticketInput from localStorage before creating form data
-          const storedTicketText = localStorage.getItem('selectedTicketText') || '';
-          document.getElementById('ticketInput').value = storedTicketText;
+          const storedticketInput = localStorage.getItem('selectedticketInput') || '';
+          document.getElementById('ticketInput').value = storedticketInput;
 
           const formData = new FormData(this);
           const params = new URLSearchParams();
