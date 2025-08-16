@@ -26,7 +26,7 @@
         <button class="ticket-btn" onclick="selectTicket('$40 - Dinner and Open Bar Only')">$40 — Dinner and Open Bar Only</button>
         <div class="spacer"></div>
         <img src="flyer.png" alt="Event Flyer" class="responsive" />
-        <p class="note">Join Us</p>
+        <p class="note">Join Us!</p>
       </div>
 
       <!-- Page 2: Form Submission -->
@@ -137,25 +137,32 @@
     });
 
     // Final submit listener with ticket fix
-    document.getElementById('ticketForm').addEventListener('submit', function (e) {
-      const storedTicketText = localStorage.getItem('selectedTicketText');
-      if (storedTicketText) {
-        document.getElementById('ticketInput').value = storedTicketText;
-      }
+      document.getElementById('ticketForm').addEventListener('submit', function (e) {
+        const storedTicketText = localStorage.getItem('selectedTicketText');
+        if (storedTicketText) {
+          document.getElementById('ticketInput').value = storedTicketText;
+        }
 
-      const formData = new FormData(this);
+        const formData = new FormData(this);
+        const params = new URLSearchParams();
 
-      // Debug log
-      for (let [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-      }
+        for (const [key, value] of formData.entries()) {
+          params.append(key, value);
+        }
 
-      // Send to Google Sheets
-      fetch('https://script.google.com/macros/s/AKfycbwDAAqfe77bCibMzP3jLsD8g0eMBwO5GZ3Wz5WECaJE9uc1XAtJQf1rf9sCpIP6yt8NyA/exec', {
-        method: 'POST',
-        body: formData
+        // Debug log
+        console.log("Sending to Google Sheets:", params.toString());
+
+        // ✅ Send to Google Sheets
+        fetch('https://script.google.com/macros/s/AKfycbwDAAqfe77bCibMzP3jLsD8g0eMBwO5GZ3Wz5WECaJE9uc1XAtJQf1rf9sCpIP6yt8NyA/exec', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: params.toString()
+        });
+
+        // ✅ Let FormSubmit handle its own submission
       });
-    });
+
   </script>
 </body>
 </html>
