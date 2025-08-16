@@ -2,162 +2,120 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ticket Submission</title>
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #f8f5f0;
-      margin: 0;
-      padding: 20px;
-    }
-
-    .page {
-      display: none;
-      transition: opacity 0.4s ease, transform 0.4s ease;
-    }
-    .page.active {
-      display: block;
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    h2 {
-      color: #2f2f2f;
-    }
-
-    input, select, button {
-      display: block;
-      margin: 12px 0;
-      padding: 10px;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      width: 100%;
-      max-width: 400px;
-    }
-
-    button {
-      background-color: #d4af37;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
-    button:active {
-      transform: scale(0.97);
-    }
-
-    .checkbox-label {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 20px 0;
-      font-size: 1rem;
-    }
-
-    #submitBtn:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Event Ticketing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-  <!-- Page 1: Ticket Type -->
-  <div id="page1" class="page active">
-    <h2>Select Ticket Type</h2>
-    <select id="ticketType">
-      <option value="">Choose a ticket</option>
-      <option value="General Admission">General Admission</option>
-      <option value="VIP">VIP</option>
-    </select>
-    <button id="next1">Next</button>
-  </div>
-
-  <!-- Page 2: User Info -->
-  <div id="page2" class="page">
-    <h2>Your Info</h2>
-    <input type="text" id="userName" placeholder="Your Name" />
-    <input type="email" id="userEmail" placeholder="Your Email" />
-    <button id="next2">Next</button>
-  </div>
-
-  <!-- Page 3: Payment Instructions -->
-  <div id="page3" class="page">
-    <h2>Payment Instructions</h2>
-    <p>Please send payment via:</p>
-    <ul>
-      <li>Venmo: @YourHandle</li>
-      <li>Cash App: $YourHandle</li>
+  <div class="shell">
+    <ul class="steps">
+      <li data-page="ticketsPage">Tickets</li>
+      <li data-page="paymentPage">Payment</li>
+      <li data-page="formPage">Info</li>
     </ul>
-    <button id="next3">I’ve Paid</button>
-  </div>
+    <div class="card">
+      <!-- Page 2 -->
+      <div id="ticketsPage" class="page active">
+        <h2>Select your ticket:</h2>
+        <button class="ticket-btn" onclick="selectTicket('$65 - Dinner, Open Bar, and Cigars for Non-Member')">$65 — Dinner, Open Bar, and Cigars for Non‑Member</button>
+        <div class="spacer"></div>
+        <button class="ticket-btn" onclick="selectTicket('$55 - Dinner, Open Bar, and Cigars for Pacentrano Club Members')">$55 — Dinner, Open Bar, and Cigars for Pacentrano Club Members</button>
+        <div class="spacer"></div>
+        <button class="ticket-btn" onclick="selectTicket('$40 - Dinner and Open Bar Only')">$40 — Dinner and Open Bar Only</button>
+        
 
-  <!-- Page 4: Confirmation & Submit -->
-  <div id="page4" class="page">
-    <h2>🎉 You're Almost Done!</h2>
-    <p>Please confirm that you've completed payment.</p>
+        <div class="spacer"></div>
+        <img src="flyer.png" alt="Event Flyer" class="responsive" />
+        <p class="note">Secure your spot — limited availability.</p>
 
-    <label class="checkbox-label">
-      <input type="checkbox" id="paymentConfirmed" />
-      <span>I’ve completed payment</span>
-    </label>
+      </div>
 
-    <form action="https://formsubmit.co/pacentranoclubit@gmail.com" method="POST" id="finalForm">
-      <input type="hidden" name="ticketType" id="ticketTypeInput" />
-      <input type="hidden" name="userName" id="userNameInput" />
-      <input type="hidden" name="email" id="emailInput" />
-      <button type="submit" disabled id="submitBtn">Submit Ticket 🎟️</button>
-    </form>
+      <!-- Page 3 (was Page 4): Payment -->
+      <div id="paymentPage" class="page">
+        <h2>Send payment via Zelle</h2>
+        <p class="note">Amount:</p>
+        <p class="amount" id="selectedTicket"></p>
+        <p class="note">Please include your full name in the payment note. The Pacentrano Club Zelle account can be found by searching the email address below.</p>
+        <p><strong>Email:</strong> pacentranoclubit@email.com</p>
+        <div class="spacer"></div>
+        <img src="Zelle QR Code.png" alt="Zelle QR Code" class="responsive" style="max-width: 280px; margin: 12px auto; display: block;"/>
+        <div class="spacer"></div>
+        <button class="btn btn-primary btn-block" onclick="showPage('formPage')">Continue to Submit Info</button>
+      </div>
+
+      <!-- Page 4 (was Page 3): Form -->
+      <div id="formPage" class="page">
+        <h2>Enter your info</h2>
+        <form action="https://formsubmit.co/pacentranoclubit@gmail.com" method="POST">
+          <input class="input" type="text" name="name" placeholder="Full Name" required>
+          <div class="helper">As it should appear on your reservation.</div>
+
+          <input class="input" type="email" name="email" placeholder="Email" required>
+          <div class="helper">We’ll send your confirmation here.</div>
+
+          <input class="input" type="tel" name="phone" placeholder="Phone Number" required>
+          <div class="helper">For day‑of updates if needed.</div>
+
+          <input type="hidden" name="_subject" value="New Ticket Submission" />
+          <input type="hidden" name="_next" value="flyerPage" />
+          <input type="hidden" name="_autoresponse" value="Thanks for your ticket submission. We'll see you on October 11th!." />
+
+          <div class="spacer"></div>
+          <button class="btn btn-primary btn-block" type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
   </div>
 
   <script>
-  // Store user data
-  const userData = {
-    ticketType: '',
-    name: '',
-    email: ''
-  };
+    function showPage(pageId) {
+      const pages = document.querySelectorAll('.page');
+      pages.forEach(page => {
+        if (page.id === pageId) {
+          page.style.display = 'block';
+          requestAnimationFrame(() => {
+            page.classList.add('active');
+          });
+        } else {
+          page.classList.remove('active');
+          setTimeout(() => {
+            if (!page.classList.contains('active')) {
+              page.style.display = 'none';
+            }
+          }, 220);
+        }
+      });
 
-  // Page navigation helper
-  function showPage(id) {
-    document.querySelectorAll('.page').forEach(page => {
-      page.classList.remove('active');
+      document.querySelectorAll('.steps li').forEach(li => {
+        li.classList.toggle('current', li.dataset.page === pageId);
+      });
+    }
+
+    function selectTicket(ticketText) {
+      const amountOnly = ticketText.match(/\$\d+(?:\.\d{2})?/)[0];
+      document.getElementById('selectedTicket').textContent = amountOnly;
+      showPage('paymentPage');
+    }
+
+    document.querySelectorAll('.btn, .ticket-btn').forEach(button => {
+      button.addEventListener('click', function (e) {
+        const circle = document.createElement('span');
+        const diameter = Math.max(this.clientWidth, this.clientHeight);
+        const radius = diameter / 2;
+
+        circle.style.width = circle.style.height = `${diameter}px`;
+        circle.style.left = `${e.clientX - this.getBoundingClientRect().left - radius}px`;
+        circle.style.top = `${e.clientY - this.getBoundingClientRect().top - radius}px`;
+        circle.classList.add('ripple');
+
+        const oldRipple = this.querySelector('.ripple');
+        if (oldRipple) oldRipple.remove();
+
+        this.appendChild(circle);
+        setTimeout(() => circle.remove(), 600);
+      });
     });
-    document.getElementById(id).classList.add('active');
-  }
-
-  // Page 1 → Page 2
-  document.getElementById('next1').addEventListener('click', () => {
-    const ticket = document.getElementById('ticketType').value;
-    if (!ticket) {
-      alert('Please select a ticket type.');
-      return;
-    }
-    userData.ticketType = ticket;
-    showPage('page2');
-  });
-
-  // Page 2 → Page 3
-  document.getElementById('next2').addEventListener('click', () => {
-    const name = document.getElementById('userName').value.trim();
-    const email = document.getElementById('userEmail').value.trim();
-    if (!name || !email) {
-      alert('Please enter your name and email.');
-      return;
-    }
-    userData.name = name;
-    userData.email = email;
-    showPage('page3');
-  });
-
-  // Page 3 → Page 4
-  document.getElementById('next3').addEventListener('click', () => {
-    // Populate hidden inputs
-    document.getElementById('ticketTypeInput').value = userData.ticketType;
-    document.getElementById('userNameInput').value = userData.name;
-    document.getElementById('emailInput').value = userData.email;
-    showPage('page4');
-  });
+  </script>
+</body>
+</html>
