@@ -43,8 +43,10 @@
           <input class="input" type="tel" name="phone" placeholder="Phone Number" required>
           <div class="helper">For day‑of updates if needed.</div>
 
-          <input type="hidden" name="ticket" id="ticketInput" />
-          <input type="hidden" name="_subject" value="New Ticket Submission" />
+          <label>
+            Ticket (debug):
+            <input type="text" name="ticket" id="ticketInput" readonly style="width:100%;">
+          </label>          <input type="hidden" name="_subject" value="New Ticket Submission" />
           <input type="hidden" name="_next" value="https://anthonypacella.github.io/PacentranoSmokerTickets/#paymentPage" />
           <input type="hidden" name="_autoresponse" value="Thanks for your ticket submission. We'll see you on October 11th!." />
 
