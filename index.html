@@ -27,7 +27,7 @@
         <div class="spacer"></div>
         <h2>Event Flyer:</h2>
         <img src="flyer.png" alt="Event Flyer" class="responsive" />
-        <p class="note">Join Us!</p>
+        <p class="note">Join Us!!</p>
       </div>
 
       <!-- Page 2: Form Submission -->
@@ -138,35 +138,27 @@
     });
 
     // Final submit listener with ticket fix
-      document.getElementById('ticketForm').addEventListener('submit', function (e) {
-        // ✅ Step 1: Always inject the stored ticket value into the hidden input
-        const storedTicketText = localStorage.getItem('selectedTicketText') || '';
-        document.getElementById('ticketInput').value = storedTicketText;
+        document.getElementById('ticketForm').addEventListener('submit', function () {
+          // Always set ticketInput from localStorage before creating form data
+          const storedTicketText = localStorage.getItem('selectedTicketText') || '';
+          document.getElementById('ticketInput').value = storedTicketText;
 
-        // ✅ Step 2: Build URLSearchParams for Google Sheets
-        const formData = new FormData(this);
-        const params = new URLSearchParams();
+          const formData = new FormData(this);
+          const params = new URLSearchParams();
 
-        for (const [key, value] of formData.entries()) {
-          params.append(key, value);
-        }
+          for (const [key, value] of formData.entries()) {
+            params.append(key, value);
+          }
 
-        // ✅ Debug log — see exactly what we're sending
-        console.log("Payload to Google Sheets →", params.toString());
+          console.log("Sending to Google Sheets:", params.toString());
 
-        // ✅ Step 3: Fire & forget — don't block FormSubmit, but log fetch status
-        fetch('https://script.google.com/macros/s/AKfycbwDAAqfe77bCibMzP3jLsD8g0eMBwO5GZ3Wz5WECaJE9uc1XAtJQf1rf9sCpIP6yt8NyA/exec', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: params.toString(),
-          keepalive: true // helps survive page unload
-        })
-        .then(res => res.text())
-        .then(txt => console.log("Google Sheets response:", txt))
-        .catch(err => console.error("Google Sheets error:", err));
-
-        // ✅ Step 4: Let FormSubmit proceed normally
-      });
+          fetch('https://script.google.com/macros/s/AKfycbwDAAqfe77bCibMzP3jLsD8g0eMBwO5GZ3Wz5WECaJE9uc1XAtJQf1rf9sCpIP6yt8NyA/exec', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: params.toString(),
+            keepalive: true
+          });
+        });
   </script>
 </body>
 </html>
