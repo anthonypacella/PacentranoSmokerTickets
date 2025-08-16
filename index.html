@@ -2,263 +2,162 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Event Ticketing</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ticket Submission</title>
   <style>
-    :root {
-      --bg-start: #f8f5f0;
-      --bg-end: #e9e4d9;
-      --text: #2f2f2f;
-      --muted: #6b7280;
-      --primary: #d4af37;
-      --primary-hover: #b8902f;
-      --card-bg: #ffffff;
-      --border: #e5e7eb;
-      --shadow: 0 10px 30px rgba(0,0,0,0.12);
-      --radius: 14px;
-      --focus: 0 0 0 3px rgba(212,175,55,0.35);
-      --transition: 220ms ease;
-    }
-    * { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; font-family: 'Poppins', sans-serif; }
     body {
-      color: var(--text);
-      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
-      display: grid;
-      place-items: center;
-      padding: 24px;
+      font-family: 'Poppins', sans-serif;
+      background: #f8f5f0;
+      margin: 0;
+      padding: 20px;
     }
-    .shell { width: 100%; max-width: 640px; }
-    .card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 24px;
-    }
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-bottom: 14px;
-      padding: 0;
-      list-style: none;
-    }
-    .steps li {
-      font-size: 12px;
-      color: var(--muted);
-      text-align: center;
-      padding: 8px 6px;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      background: #fff;
-    }
-    .steps li.current {
-      color: #000;
-      border-color: var(--primary);
-      box-shadow: inset 0 0 0 2px rgba(212,175,55,0.25);
-      font-weight: 600;
-    }
+
     .page {
       display: none;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity var(--transition), transform var(--transition);
-      text-align: center;
+      transition: opacity 0.4s ease, transform 0.4s ease;
     }
     .page.active {
       display: block;
       opacity: 1;
       transform: translateY(0);
     }
-    img.responsive {
-      max-width: 100%;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+
+    h2 {
+      color: #2f2f2f;
     }
-    h2 { margin: 0 0 12px; font-size: 22px; }
-    p { color: var(--muted); margin: 8px 0; }
-    .btn, .ticket-btn {
-      display: inline-block;
-      font-size: 16px;
-      font-weight: 600;
-      padding: 12px 18px;
-      border-radius: 10px;
+
+    input, select, button {
+      display: block;
+      margin: 12px 0;
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    button {
+      background-color: #d4af37;
+      color: white;
       border: none;
       cursor: pointer;
-      transition: transform 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.08);
-      position: relative;
-      overflow: hidden;
+      transition: transform 0.2s ease;
     }
-    .btn:focus-visible { outline: none; box-shadow: var(--focus); }
-    .btn:active { transform: translateY(1px) scale(0.99); }
-    .btn-primary { background: var(--primary); color: #fff; }
-    .btn-primary:hover { background: var(--primary-hover); }
-    .btn-block { width: 100%; }
-    .ticket-btn {
-      width: 100%;
-      text-align: left;
-      padding: 14px 16px;
-      margin: 10px 0;
-      border: 1px solid var(--border);
-      background: #fff;
-      color: var(--text);
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+
+    button:active {
+      transform: scale(0.97);
     }
-    .ticket-btn:hover {
-      border-color: var(--primary);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-      transform: translateY(-1px);
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 20px 0;
+      font-size: 1rem;
     }
-    .ripple {
-      position: absolute;
-      border-radius: 50%;
-      transform: scale(0);
-      animation: ripple 600ms linear;
-      background-color: rgba(255, 255, 255, 0.45);
-    }
-    @keyframes ripple {
-      to {
-        transform: scale(4);
-        opacity: 0;
-      }
-    }
-    form { margin-top: 6px; }
-    .input {
-      display: block;
-      width: 100%;
-      padding: 12px 14px;
-      margin: 10px 0 2px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: #fff;
-      font-size: 16px;
-      color: var(--text);
-      transition: border-color var(--transition), box-shadow var(--transition);
-    }
-    .input::placeholder { color: #9ca3af; }
-    .input:focus { outline: none; border-color: var(--primary); box-shadow: var(--focus); }
-    .helper { text-align: left; font-size: 12px; color: var(--muted); margin-bottom: 8px; }
-    .note { margin-top: 12px; font-size: 13px; color: var(--muted); }
-    .spacer { height: 12px; }
-    .amount {
-      font-size: 1.4em;
-      font-weight: 600;
-      color: var(--primary);
+
+    #submitBtn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
     }
   </style>
 </head>
 <body>
-  <div class="shell">
-    <ul class="steps">
-      <li data-page="flyerPage" class="current">Flyer</li>
-      <li data-page="ticketsPage">Tickets</li>
-      <li data-page="formPage">Info</li>
-      <li data-page="paymentPage">Payment</li>
+
+  <!-- Page 1: Ticket Type -->
+  <div id="page1" class="page active">
+    <h2>Select Ticket Type</h2>
+    <select id="ticketType">
+      <option value="">Choose a ticket</option>
+      <option value="General Admission">General Admission</option>
+      <option value="VIP">VIP</option>
+    </select>
+    <button id="next1">Next</button>
+  </div>
+
+  <!-- Page 2: User Info -->
+  <div id="page2" class="page">
+    <h2>Your Info</h2>
+    <input type="text" id="userName" placeholder="Your Name" />
+    <input type="email" id="userEmail" placeholder="Your Email" />
+    <button id="next2">Next</button>
+  </div>
+
+  <!-- Page 3: Payment Instructions -->
+  <div id="page3" class="page">
+    <h2>Payment Instructions</h2>
+    <p>Please send payment via:</p>
+    <ul>
+      <li>Venmo: @YourHandle</li>
+      <li>Cash App: $YourHandle</li>
     </ul>
-    <div class="card">
-      <!-- Page 1 -->
-      <div id="flyerPage" class="page active">
-        <img src="flyer.png" alt="Event Flyer" class="responsive"/>
-        <div class="spacer"></div>
-        <button class="btn btn-primary btn-block" onclick="showPage('ticketsPage')">Buy Tickets</button>
-        <p class="note">Secure your spot — limited availability.</p>
-      </div>
-      <!-- Page 2 -->
-      <div id="ticketsPage" class="page">
-        <h2>Select your ticket</h2>
-        <button class="ticket-btn" onclick="selectTicket('$65 - Dinner, Open Bar, and Cigars for Non-Member')">$65 — Dinner, Open Bar, and Cigars for Non‑Member</button>
-        <button class="ticket-btn" onclick="selectTicket('$55 - Dinner, Open Bar, and Cigars for Pacentrano Club Members')">$55 — Dinner, Open Bar, and Cigars for Pacentrano Club Members</button>
-        <button class="ticket-btn" onclick="selectTicket('$40 - Dinner and Open Bar Only')">$40 — Dinner and Open Bar Only</button>
-      </div>
-      <!-- Page 3 -->
-      <div id="formPage" class="page">
-        <h2>Enter your info</h2>
-        <form action="https://formsubmit.co/pacentranoclubit@gmail.com" method="POST">
-          <input class="input" type="text" name="name" placeholder="Full Name" required>
-          <div class="helper">As it should appear on your reservation.</div>
+    <button id="next3">I’ve Paid</button>
+  </div>
 
-          <input class="input" type="email" name="email" placeholder="Email" required>
-          <div class="helper">We’ll send your confirmation here.</div>
+  <!-- Page 4: Confirmation & Submit -->
+  <div id="page4" class="page">
+    <h2>🎉 You're Almost Done!</h2>
+    <p>Please confirm that you've completed payment.</p>
 
-          <input class="input" type="tel" name="phone" placeholder="Phone Number" required>
-          <div class="helper">For day‑of updates if needed.</div>
+    <label class="checkbox-label">
+      <input type="checkbox" id="paymentConfirmed" />
+      <span>I’ve completed payment</span>
+    </label>
 
-          <input type="hidden" name="_subject" value="New Ticket Submission" />
-          <input type="hidden" name="_next" value="paymentPage" />
-          <input type="hidden" name="_autoresponse" value="Thanks for your ticket submission. We'll see you on October 11th!." />
-
-          <div class="spacer"></div>
-          <button class="btn btn-primary btn-block" type="submit">Submit</button>
-        </form>
-      </div>
-
-      <!-- Page 4 -->
-      <div id="paymentPage" class="page">
-        <h2>Send payment via Zelle</h2>
-        <p class="note">Amount:</p>
-        <p class="amount" id="selectedTicket"></p>
-        <p class="note">Please include your full name in the payment note. The Pacentrano Club Zelle account can be found by searching the email address below.</p>
-        <p><strong>Email:</strong> pacentranoclubit@email.com</p>
-        <div class="spacer"></div>
-        <img src="Zelle QR Code.png" alt="Zelle QR Code" class="responsive" style="max-width: 280px; margin: 12px auto; display: block;"/>
-        <div class="spacer"></div>
-        <button class="btn btn-primary btn-block" onclick="showPage('flyerPage')">Buy Another Ticket</button>
-      </div>
-    </div>
+    <form action="https://formsubmit.co/pacentranoclubit@gmail.com" method="POST" id="finalForm">
+      <input type="hidden" name="ticketType" id="ticketTypeInput" />
+      <input type="hidden" name="userName" id="userNameInput" />
+      <input type="hidden" name="email" id="emailInput" />
+      <button type="submit" disabled id="submitBtn">Submit Ticket 🎟️</button>
+    </form>
   </div>
 
   <script>
-    function showPage(pageId) {
-      const pages = document.querySelectorAll('.page');
-      pages.forEach(page => {
-        if (page.id === pageId) {
-          page.style.display = 'block';
-          requestAnimationFrame(() => {
-            page.classList.add('active');
-          });
-        } else {
-          page.classList.remove('active');
-          setTimeout(() => {
-            if (!page.classList.contains('active')) {
-              page.style.display = 'none';
-            }
-          }, 220);
-        }
-      });
+  // Store user data
+  const userData = {
+    ticketType: '',
+    name: '',
+    email: ''
+  };
 
-      document.querySelectorAll('.steps li').forEach(li => {
-        li.classList.toggle('current', li.dataset.page === pageId);
-      });
-    }
-
-    function selectTicket(ticketText) {
-      const amountOnly = ticketText.match(/\$\d+(?:\.\d{2})?/)[0];
-      document.getElementById('selectedTicket').textContent = amountOnly;
-      showPage('formPage');
-    }
-
-    document.querySelectorAll('.btn, .ticket-btn').forEach(button => {
-      button.addEventListener('click', function (e) {
-        const circle = document.createElement('span');
-        const diameter = Math.max(this.clientWidth, this.clientHeight);
-        const radius = diameter / 2;
-
-        circle.style.width = circle.style.height = `${diameter}px`;
-        circle.style.left = `${e.clientX - this.getBoundingClientRect().left - radius}px`;
-        circle.style.top = `${e.clientY - this.getBoundingClientRect().top - radius}px`;
-        circle.classList.add('ripple');
-
-        const oldRipple = this.querySelector('.ripple');
-        if (oldRipple) oldRipple.remove();
-
-        this.appendChild(circle);
-        setTimeout(() => circle.remove(), 600);
-      });
+  // Page navigation helper
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(page => {
+      page.classList.remove('active');
     });
-  </script>
-</body>
-</html>
+    document.getElementById(id).classList.add('active');
+  }
+
+  // Page 1 → Page 2
+  document.getElementById('next1').addEventListener('click', () => {
+    const ticket = document.getElementById('ticketType').value;
+    if (!ticket) {
+      alert('Please select a ticket type.');
+      return;
+    }
+    userData.ticketType = ticket;
+    showPage('page2');
+  });
+
+  // Page 2 → Page 3
+  document.getElementById('next2').addEventListener('click', () => {
+    const name = document.getElementById('userName').value.trim();
+    const email = document.getElementById('userEmail').value.trim();
+    if (!name || !email) {
+      alert('Please enter your name and email.');
+      return;
+    }
+    userData.name = name;
+    userData.email = email;
+    showPage('page3');
+  });
+
+  // Page 3 → Page 4
+  document.getElementById('next3').addEventListener('click', () => {
+    // Populate hidden inputs
+    document.getElementById('ticketTypeInput').value = userData.ticketType;
+    document.getElementById('userNameInput').value = userData.name;
+    document.getElementById('emailInput').value = userData.email;
+    showPage('page4');
+  });
