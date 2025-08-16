@@ -136,10 +136,21 @@
       }
     });
 
-    // Send form data to Google Sheets before FormSubmit
+    // Final submit listener with ticket fix
     document.getElementById('ticketForm').addEventListener('submit', function (e) {
+      const storedTicketText = localStorage.getItem('selectedTicketText');
+      if (storedTicketText) {
+        document.getElementById('ticketInput').value = storedTicketText;
+      }
+
       const formData = new FormData(this);
 
+      // Debug log
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+
+      // Send to Google Sheets
       fetch('https://script.google.com/macros/s/AKfycbwDAAqfe77bCibMzP3jLsD8g0eMBwO5GZ3Wz5WECaJE9uc1XAtJQf1rf9sCpIP6yt8NyA/exec', {
         method: 'POST',
         body: formData
