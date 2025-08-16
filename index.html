@@ -27,7 +27,7 @@
         <div class="spacer"></div>
         <h2>Event Flyer:</h2>
         <img src="flyer.png" alt="Event Flyer" class="responsive" />
-        <p class="note">Join Us!!</p>
+        <p class="note">Join Us!</p>
       </div>
 
       <!-- Page 2: Form Submission -->
@@ -94,7 +94,7 @@
     function selectTicket(ticketInput) {
       const amountOnly = ticketText.match(/\$\d+(?:\.\d{2})?/)[0];
       localStorage.setItem('selectedTicket', amountOnly);
-      localStorage.setItem('selectedTicketText', ticketText);
+      localStorage.setItem('selectedTicketText', ticketInput);
       document.getElementById('selectedTicket').textContent = amountOnly;
       document.getElementById('ticketInput').value = ticketText;
       showPage('formPage');
