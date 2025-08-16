@@ -11,42 +11,27 @@
   <div class="shell">
     <ul class="steps">
       <li data-page="ticketsPage">Tickets</li>
-      <li data-page="paymentPage">Payment</li>
       <li data-page="formPage">Info</li>
+      <li data-page="paymentPage">Payment</li>
     </ul>
     <div class="card">
-      <!-- Page 2 -->
+
+      <!-- Page 1: Ticket Selection -->
       <div id="ticketsPage" class="page active">
-        <h2>Select your ticket:</h2>
+        <h2 onclick="showPage('ticketsPage')" class="clickable-header">Tickets</h2>
         <button class="ticket-btn" onclick="selectTicket('$65 - Dinner, Open Bar, and Cigars for Non-Member')">$65 — Dinner, Open Bar, and Cigars for Non‑Member</button>
         <div class="spacer"></div>
         <button class="ticket-btn" onclick="selectTicket('$55 - Dinner, Open Bar, and Cigars for Pacentrano Club Members')">$55 — Dinner, Open Bar, and Cigars for Pacentrano Club Members</button>
         <div class="spacer"></div>
         <button class="ticket-btn" onclick="selectTicket('$40 - Dinner and Open Bar Only')">$40 — Dinner and Open Bar Only</button>
-        
-
         <div class="spacer"></div>
         <img src="flyer.png" alt="Event Flyer" class="responsive" />
         <p class="note">Secure your spot — limited availability.</p>
-
       </div>
 
-      <!-- Page 3 (was Page 4): Payment -->
-      <div id="paymentPage" class="page">
-        <h2>Send payment via Zelle</h2>
-        <p class="note">Amount:</p>
-        <p class="amount" id="selectedTicket"></p>
-        <p class="note">Please include your full name in the payment note. The Pacentrano Club Zelle account can be found by searching the email address below.</p>
-        <p><strong>Email:</strong> pacentranoclubit@email.com</p>
-        <div class="spacer"></div>
-        <img src="Zelle QR Code.png" alt="Zelle QR Code" class="responsive" style="max-width: 280px; margin: 12px auto; display: block;"/>
-        <div class="spacer"></div>
-        <button class="btn btn-primary btn-block" onclick="showPage('formPage')">Continue to Submit Info</button>
-      </div>
-
-      <!-- Page 4 (was Page 3): Form -->
+      <!-- Page 2: Form Submission -->
       <div id="formPage" class="page">
-        <h2>Enter your info</h2>
+        <h2 onclick="showPage('formPage')" class="clickable-header">Info</h2>
         <form action="https://formsubmit.co/pacentranoclubit@gmail.com" method="POST">
           <input class="input" type="text" name="name" placeholder="Full Name" required>
           <div class="helper">As it should appear on your reservation.</div>
@@ -57,14 +42,28 @@
           <input class="input" type="tel" name="phone" placeholder="Phone Number" required>
           <div class="helper">For day‑of updates if needed.</div>
 
+          <input type="hidden" name="ticket" id="ticketInput" />
           <input type="hidden" name="_subject" value="New Ticket Submission" />
-          <input type="hidden" name="_next" value="flyerPage" />
+          <input type="hidden" name="_next" value="#paymentPage" />
           <input type="hidden" name="_autoresponse" value="Thanks for your ticket submission. We'll see you on October 11th!." />
 
           <div class="spacer"></div>
           <button class="btn btn-primary btn-block" type="submit">Submit</button>
         </form>
       </div>
+
+      <!-- Page 3: Payment Instructions -->
+      <div id="paymentPage" class="page">
+        <h2 onclick="showPage('paymentPage')" class="clickable-header">Payment</h2>
+        <p class="note">Amount:</p>
+        <p class="amount" id="selectedTicket"></p>
+        <p class="note">Please include your full name in the payment note. The Pacentrano Club Zelle account can be found by searching the email address below.</p>
+        <p><strong>Email:</strong> pacentranoclubit@email.com</p>
+        <div class="spacer"></div>
+        <img src="Zelle QR Code.png" alt="Zelle QR Code" class="responsive" style="max-width: 280px; margin: 12px auto; display: block;"/>
+        <div class="spacer"></div>
+      </div>
+
     </div>
   </div>
 
@@ -95,7 +94,8 @@
     function selectTicket(ticketText) {
       const amountOnly = ticketText.match(/\$\d+(?:\.\d{2})?/)[0];
       document.getElementById('selectedTicket').textContent = amountOnly;
-      showPage('paymentPage');
+      document.getElementById('ticketInput').value = ticketText;
+      showPage('formPage');
     }
 
     document.querySelectorAll('.btn, .ticket-btn').forEach(button => {
