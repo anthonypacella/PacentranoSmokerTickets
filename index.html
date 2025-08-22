@@ -27,7 +27,7 @@
         <div class="spacer"></div>
         <h2>Event Flyer:</h2>
         <img src="flyer.png" alt="Event Flyer" class="responsive" />
-        <p class="note">Join Us!</p>
+        <p class="note">Join Us!!S</p>
       </div>
 
       <!-- Page 2: Form Submission -->
@@ -129,6 +129,8 @@
       const hash = window.location.hash;
       if (hash) {
         showPage(hash.replace('#', ''));
+      } else {
+        showPage('ticketsPage'); // ✅ highlight "Tickets" on first load
       }
 
       const storedAmount = localStorage.getItem('selectedTicket');
