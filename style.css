@@ -165,16 +165,18 @@
       color: var(--primary);
     }
     .btn-secondary {
-      background-color: #f0f0f0;
-      color: #333;
-      border: 1px solid #ccc;
-      padding: 10px 16px;
-      border-radius: 6px;
-      font-weight: 500;
+      background-color: #0078D7;     /* Ticket button blue */
+      color: white;                  /* White text */
+      border: none;                  /* Optional: remove border for cleaner look */
+      padding: 14px 24px;            /* Bigger button */
+      border-radius: 8px;            /* Slightly more rounded */
+      font-size: 16px;               /* Larger text */
+      font-weight: 600;              /* Slightly bolder */
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.2s ease;
     }
 
     .btn-secondary:hover {
-      background-color: #e0e0e0;
+      background-color: #005fa3;     /* Slightly darker blue on hover */
+      transform: scale(1.02);        /* Subtle grow effect */
     }
