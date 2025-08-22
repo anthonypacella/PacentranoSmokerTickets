@@ -164,6 +164,7 @@
       font-weight: 600;
       color: var(--primary);
     }
+    
     .btn-secondary {
       background-color: #0078D7;     /* Ticket button blue */
       color: white;                  /* White text */
