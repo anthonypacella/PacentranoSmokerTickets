@@ -27,7 +27,7 @@
         <div class="spacer"></div>
         <h2>Event Flyer:</h2>
         <img src="flyer.png" alt="Event Flyer" class="responsive" />
-        <p class="note">Join Us!!S</p>
+        <p class="note">Join Us!</p>
       </div>
 
       <!-- Page 2: Form Submission -->
@@ -68,6 +68,7 @@
         <p>Search the username @anthonypacella or Scan QR code below to complete the Venmo payment:</p>
         <img src="Venmo QR Code.png" alt="Venmo QR Code" class="responsive" style="max-width: 280px; margin: 12px auto; display: block;"/>
         <div class="spacer"></div>
+        <button class="btn btn-secondary btn-block" onclick="buyAnotherTicket()">Buy Another Ticket</button>
       </div>
 
     </div>
@@ -171,6 +172,18 @@
         // Now submit the form to FormSubmit
         this.submit();
       });
+      function buyAnotherTicket() {
+          // Clear stored ticket info
+          localStorage.removeItem('selectedTicket');
+          localStorage.removeItem('selectedticketInput');
+
+          // Reset ticket display and hidden input
+          document.getElementById('selectedTicket').textContent = '';
+          document.getElementById('ticketInput').value = '';
+
+          // Navigate back to the first page
+          showPage('ticketsPage');
+        }
   </script>
 </body>
 </html>
