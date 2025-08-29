@@ -72,6 +72,8 @@
         <p>Search the username @anthonypacella or Scan QR code below to complete the Venmo payment:</p>
         <img src="Venmo QR Code.png" alt="Venmo QR Code" class="responsive" style="max-width: 280px; margin: 12px auto; display: block;"/>
         <div class="spacer"></div>
+        <button class="btn btn-secondary btn-block" onclick="handleNoPaymentOption()">Click here if you don't have Zelle or Venmo</button>
+        <div class="spacer"></div>
         <button class="btn btn-secondary btn-block" onclick="buyAnotherTicket()">Buy Another Ticket</button>
       </div>
 
@@ -187,6 +189,9 @@
 
           // Navigate back to the first page
           showPage('ticketsPage');
+        }
+        function handleNoPaymentOption() {
+        alert("If you don't have Zelle or Venmo, please contact the Pacentrano Club directly at pacentranoclubyoungstown@gmail.com or call/text Anthony Pacella @ 724-634-8156 to arrange an alternative payment method. You will not be added to the guest list until your payment is received. Thank you.");
         }
   </script>
 </body>
